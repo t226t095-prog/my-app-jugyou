@@ -19,16 +19,17 @@ let gameState = 'START'; // START, PLAYING, GAMEOVER
 let score = 0;
 let animationId;
 let lastTime = 0;
+let screenShake = 0;
 
 // Game Config
 const CONFIG = {
     playerSpeed: 5,
     playerSize: 20,
-    projectileSpeed: 8,
+    projectileSpeed: 10,
     projectileSize: 5,
     monsterSpawnRate: 1500, // ms
     monsterBaseSpeed: 2,
-    monsterSize: 15,
+    monsterSize: 18,
     maxHealth: 100
 };
 
@@ -235,8 +236,17 @@ function animate(timestamp) {
     ctx.fillStyle = 'rgba(26, 26, 26, 0.2)'; // Motion blur effect
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // Apply screen shake
+    if (screenShake > 0) {
+        const sx = (Math.random() - 0.5) * screenShake;
+        const sy = (Math.random() - 0.5) * screenShake;
+        ctx.translate(sx, sy);
+        screenShake *= 0.9;
+        if (screenShake < 0.1) screenShake = 0;
+    }
+
     // Spawn monsters
-    if (timestamp - lastSpawnTime > Math.max(300, CONFIG.monsterSpawnRate - score / 10)) {
+    if (timestamp - lastSpawnTime > Math.max(250, CONFIG.monsterSpawnRate - score / 15)) {
         spawnMonster();
         lastSpawnTime = timestamp;
     }
@@ -294,12 +304,17 @@ function animate(timestamp) {
             
             // Player hit particles
             for (let k = 0; k < 12; k++) particles.push(new Particle(player.x, player.y, '#ffffff'));
+            
+            screenShake = 15;
 
             if (health <= 0) {
                 endGame();
             }
         }
     }
+
+    // Restore context if transformed
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
 }
 
 function startGame() {
@@ -339,20 +354,6 @@ window.addEventListener('mousemove', (e) => {
 window.addEventListener('mousedown', () => {
     if (gameState === 'PLAYING') {
         projectiles.push(new Projectile(player.x, player.y, mouse.x, mouse.y));
-    }
-});
-
-startButton.addEventListener('click', startGame);
-restartButton.addEventListener('click', startGame);
-
-// Initial Resize
-resize();
-on.addEventListener('click', startGame);
-restartButton.addEventListener('click', startGame);
-
-// Initial Resize
-resize();
-.x, mouse.y));
     }
 });
 
