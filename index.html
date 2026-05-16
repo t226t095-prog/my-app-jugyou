@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monster Defense</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="ui-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen">
+            <h1>Monster Defense</h1>
+            <p>四方から迫り来るモンスターを撃退せよ！</p>
+            <div class="controls-hint">
+                <p>WASD / 矢印キー: 移動</p>
+                <p>マウス移動: 照準 / クリック: 攻撃</p>
+            </div>
+            <button id="start-button">ゲーム開始</button>
+        </div>
+
+        <!-- HUD (Heads-Up Display) -->
+        <div id="hud" class="hidden">
+            <div class="hud-item">Score: <span id="score-value">0</span></div>
+            <div id="health-bar-container">
+                <div id="health-bar"></div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen hidden">
+            <h1>Game Over</h1>
+            <p>最終スコア: <span id="final-score">0</span></p>
+            <button id="restart-button">もう一度プレイ</button>
+        </div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <script src="game.js"></script>
+</body>
+</html>
